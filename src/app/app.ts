@@ -1,9 +1,9 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { SlideComponent } from './components/slide.component/slide.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [ SlideComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
