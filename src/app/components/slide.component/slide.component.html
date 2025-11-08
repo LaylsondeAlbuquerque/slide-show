@@ -1,79 +1,112 @@
-@if (slideAtual()) {
-        <header>
-            <h1>{{slideAtual().title}}</h1>
-            @if (slideAtual().subtitle) {
-                <h2>{{slideAtual().subtitle}}</h2>
+<div class="relative w-full h-screen">
+
+  <div class="w-full h-full p-8 md:p-16 overflow-y-auto 
+              flex flex-col justify-center">
+
+    @if (slideAtual()) {
+
+    <header class="text-center">
+      <h1
+        class="text-5xl md:text-7xl font-black uppercase tracking-tighter bg-clip-text text-transparent bg-linear-to-r from-blue-400 to-emerald-400">
+        {{ slideAtual().title }}
+      </h1>
+      @if (slideAtual().subtitle) {
+      <h2 class="mt-4 text-xl md:text-2xl text-gray-300">
+        {{ slideAtual().subtitle }}
+      </h2>
+      }
+    </header>
+
+    <hr class="my-6 border-gray-700">
+
+    <main class="container mx-auto px-6 text-lg text-gray-300">
+
+      @for (block of slideAtual().blocks; track $index) {
+      @switch (block.type) {
+
+      @case ('text') {
+      <p class="mt-2 text-lg text-gray-400 text-center">
+        {{ block.content }}
+      </p>
+      }
+
+      @case ('list') {
+      <div class="flex justify-center my-4">
+        @if (block.ordered) {
+        <ol class="list-decimal list-inside">
+          @for (item of block.items; track $index) {
+          <li>{{ item }}</li>
+          }
+        </ol>
+        } @else {
+        <ul class="list-disc list-inside">
+          @for (item of block.items; track $index) {
+          <li>{{ item }}</li>
+          }
+        </ul>
+        }
+      </div>
+      }
+
+      @case ('complexList') {
+      <dl class="my-4 max-w-2xl mx-auto">
+        @for (item of block.items; track $index) {
+        <dt class="font-semibold text-white">{{ item.title }}</dt>
+        <dd class="ml-4 mb-2 text-gray-400">{{ item.description }}</dd>
+        }
+      </dl>
+      }
+
+      @case ('quote') {
+      <blockquote
+        class="my-4 border-l-4 border-gray-600 pl-4 italic text-gray-400 text-center">
+        "{{ block.text }}"
+      </blockquote>
+      }
+
+      @case ('table') {
+      <div class="overflow-x-auto">
+        <table
+          class="min-w-full divide-y divide-gray-700 my-4 text-left">
+          <thead class="bg-gray-800">
+            <tr>
+              @for (cell of block.headers; track $index) {
+              <th class="px-6 py-3 font-medium">{{ cell }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody class="bg-gray-800/50 divide-y divide-gray-700">
+            @for (row of block.rows; track $index) {
+            <tr>
+              @for (cell of row; track $index) {
+              <td class="px-6 py-4 text-gray-400">{{ cell }}</td>
+              }
+            </tr>
             }
-        </header>
-        <hr>
-        <main>
-            
-            @for (block of slideAtual().blocks; track $index) {
-                @switch (block.type) {
-                    
-                    @case ('text') {
-                        
-                        <p>{{block.content}}</p>
-                        
-                    }
-                    @case ('list') {
-                        
-                        @if (block.ordered) {
-                            <ol>
-                                @for (item of block.items; track $index) {
-                                    <li>{{item}}</li>
-                                }
-                            </ol>
-                        } @else {
-                            <ul>
-                                @for (item of block.items; track $index) {
-                                    <li>{{item}}</li>
-                                }
-                            </ul>
-                        }
-                        
-                    }
-                    @case ('complexList') {
-                        
-                        <dl>
-                            @for (item of block.items; track $index) {
-                                <dt>{{item.title}}</dt>
-                                <dd>{{item.description}}</dd>
-                            }
-                        </dl>                  
-                        
-                    }
-                    @case ('quote') {
-                        <blockquote>
-                            {{block.text}}
-                        </blockquote>
-                    }
-                    @case ('table') {
-                        <table>
-                            <thead>
-                                <tr>
-                                    @for (cell of block.headers; track $index) {
-                                        <th>{{cell}}</th>
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @for (row of block.rows; track $index) {
-                                    <tr>
-                                        @for (cell of row; track $index) {
-                                            <td>{{cell}}</td>
-                                        }
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
-                }
-            }
-        </main>
-        <footer>
-            <button (click)="voltarSlide()">&lt;</button>
-            <button (click)="proximoSlide()">&gt;</button>
-        </footer>
-    
-}
+          </tbody>
+        </table>
+      </div>
+      }
+      }
+      }
+    </main>
+    }
+  </div>
+
+  <div>
+    <button (click)="voltarSlide()" [disabled]="indiceSlide() === 0" class="absolute z-10 top-1/2 left-4 -translate-y-1/2
+           w-12 h-12 rounded-full bg-black/30 text-white
+           hover:bg-black/50 transition-colors
+           disabled:opacity-20 disabled:cursor-not-allowed">&lt;</button>
+    <button (click)="proximoSlide()" [disabled]="indiceSlide() === slides.length - 1" class="absolute z-10 top-1/2 right-4 -translate-y-1/2
+           w-12 h-12 rounded-full bg-black/30 text-white
+           hover:bg-black/50 transition-colors
+           disabled:opacity-20 disabled:cursor-not-allowed">&gt;</button>
+
+    <div class="absolute z-10 bottom-4 left-1/2 -translate-x-1/2
+           bg-black/30 text-white text-sm px-3 py-1 rounded-full">
+      <span>{{ indiceSlide() + 1 }} de {{ slides.length }}</span>
+    </div>
+  </div>
+
+</div>
