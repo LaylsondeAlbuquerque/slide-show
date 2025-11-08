@@ -1,6 +1,6 @@
 import { ISlide } from '../models/slide.model';
 
-export const MINHA_AULA: ISlide[] = [
+export const AULA_DOIS: ISlide[] = [
   // SLIDE 1
   {
     slideNumber: 1,
