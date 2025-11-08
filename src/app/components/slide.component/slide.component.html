@@ -1,0 +1,68 @@
+@if (slideAtual) {
+    <h1>{{slideAtual.title}}</h1>
+    @if (slideAtual.subtitle) {
+        <h2>{{slideAtual.subtitle}}</h2>
+    }
+    @for (block of slideAtual.blocks; track $index) {
+        @switch (block.type) {
+
+            @case ('text') {
+
+                <p>{{block.content}}</p>
+
+            }
+            @case ('list') {
+
+                @if (block.ordered) {
+                    <ol>
+                        @for (item of block.items; track $index) {
+                            <li>{{item}}</li>
+                        }
+                    </ol>
+                } @else {
+                    <ul>
+                        @for (item of block.items; track $index) {
+                            <li>{{item}}</li>
+                        }
+                    </ul>
+                }
+
+            }
+            @case ('complexList') {
+                
+                <dl>
+                    @for (item of block.items; track $index) {
+                        <dt>{{item.title}}</dt>
+                        <dd>{{item.description}}</dd>
+                    }
+                </dl>                  
+                
+            }
+            @case ('quote') {
+                <blockquote>
+                    {{block.text}}
+                </blockquote>
+            }
+            @case ('table') {
+                <table>
+                    <thead>
+                        <tr>
+                            @for (cell of block.headers; track $index) {
+                                <th>{{cell}}</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (row of block.rows; track $index) {
+                            <tr>
+                                @for (cell of row; track $index) {
+                                    <td>{{cell}}</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+    }
+}

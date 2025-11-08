@@ -12,4 +12,7 @@ import { ISlide } from '../../models/slide.model';
 export class SlideComponent {
   slides: ISlide[] = MINHA_AULA;
   
+  indiceSlide: number = 0;
+
+  slideAtual: ISlide = this.slides[this.indiceSlide];
 }

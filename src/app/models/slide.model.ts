@@ -3,7 +3,7 @@ export interface ISlide {
   slideNumber: number;
   title: string;
   subtitle?: string;
-  blocks: ContentBlock[]; // Um slide é composto por vários blocos de conteúdo
+  blocks: ContentBlock[]; // Os blocos de conteúdo
 }
 
 // Uma União Discriminada: Um ContentBlock pode ser qualquer um desses tipos
