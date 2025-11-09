@@ -1,17 +1,17 @@
 <div class="relative w-full h-screen">
 
-  <div class="w-full h-full p-8 md:p-16 overflow-y-auto 
-              flex flex-col justify-center">
+  <div class="w-full h-full p-18 md:p-24 overflow-y-auto 
+              flex flex-col justify-center" (swipeleft)="proximoSlide()" (swiperight)="voltarSlide()">
 
     @if (slideAtual()) {
 
     <header class="text-center">
       <h1
-        class="text-5xl md:text-7xl font-black uppercase tracking-tighter bg-clip-text text-transparent bg-linear-to-r from-blue-400 to-emerald-400">
+        class="text-4xl md:text-6xl font-black uppercase tracking-tighter bg-clip-text text-transparent bg-linear-to-r from-blue-400 to-emerald-400">
         {{ slideAtual().title }}
       </h1>
       @if (slideAtual().subtitle) {
-      <h2 class="mt-4 text-xl md:text-2xl text-gray-300">
+      <h2 class="mt-4 text-xl md:text-2xl text-gray-300 font-bold">
         {{ slideAtual().subtitle }}
       </h2>
       }
@@ -58,16 +58,14 @@
       }
 
       @case ('quote') {
-      <blockquote
-        class="my-4 border-l-4 border-gray-600 pl-4 italic text-gray-400 text-center">
+      <blockquote class="my-4 border-l-4 border-gray-600 pl-4 italic text-gray-400 text-center">
         "{{ block.text }}"
       </blockquote>
       }
 
       @case ('table') {
       <div class="overflow-x-auto">
-        <table
-          class="min-w-full divide-y divide-gray-700 my-4 text-left">
+        <table class="min-w-full divide-y divide-gray-700 my-4 text-left">
           <thead class="bg-gray-800">
             <tr>
               @for (cell of block.headers; track $index) {
@@ -94,14 +92,27 @@
   </div>
 
   <div>
-    <button (click)="voltarSlide()" [disabled]="indiceSlide() === 0" class="absolute z-10 top-1/2 left-4 -translate-y-1/2
-           w-12 h-12 rounded-full bg-black/30 text-white
-           hover:bg-black/50 transition-colors
-           disabled:opacity-20 disabled:cursor-not-allowed">&lt;</button>
-    <button (click)="proximoSlide()" [disabled]="indiceSlide() === slides.length - 1" class="absolute z-10 top-1/2 right-4 -translate-y-1/2
-           w-12 h-12 rounded-full bg-black/30 text-white
-           hover:bg-black/50 transition-colors
-           disabled:opacity-20 disabled:cursor-not-allowed">&gt;</button>
+    <div (click)="voltarSlide()" class="absolute z-10 top-1/2 left-0 -translate-y-1/2 
+            h-[75vh] w-18 cursor-pointer" [class.pointer-events-none]="indiceSlide() === 0">
+
+      <button [disabled]="indiceSlide() === 0" class="absolute top-1/2 left-4 -translate-y-1/2
+                   w-12 h-12 rounded-full bg-black/30 text-white
+                   font-bold
+                   transition-colors
+                   disabled:opacity-20 cursor-pointer">
+        &lt;
+      </button>
+    </div>
+    <div (click)="proximoSlide()" class="absolute z-10 top-1/2 right-0 -translate-y-1/2 
+            h-[75vh] w-18 cursor-pointer" [class.pointer-events-none]="indiceSlide() === slides.length - 1">
+      <button [disabled]="indiceSlide() === slides.length - 1" class="absolute top-1/2 
+                  right-4  -translate-y-1/2 w-12 h-12 
+                  rounded-full font-bold 
+                   bg-black/30 text-white hover:bg-black/50 
+                   transition-colors
+                    disabled:opacity-20 
+                    cursor-pointer">&gt;</button>
+    </div>
 
     <div class="absolute z-10 bottom-4 left-1/2 -translate-x-1/2
            bg-black/30 text-white text-sm px-3 py-1 rounded-full">
