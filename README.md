@@ -1,6 +1,6 @@
 # Projeto Slide-Show de Aula (Angular)
 
-Este projeto é a ferramenta de ensino para um curso de produção audiovisual do **Projeto Cria do Coque**, uma iniciativa social para adolescentes em uma comunidade do Recife. Ele transforma uma página HTML estática e longa em um aplicativo de slides interativo, tornando a aula mais acessível, moderna e engajante para os alunos.
+Este projeto é a ferramenta de ensino para um curso de produção audiovisual do **Projeto Crescer**, uma iniciativa social para adolescentes em uma comunidade do Recife. Ele foi pensado para que os alunos possam acompanhar a aula com o conteúdo em suas mãos, já que o site é publicado usando o GitHub. Isso também permite que eles tenham acesso ao conteúdo das aulas mesmo após concluírem o curso.
 
 ---
 
@@ -18,24 +18,24 @@ Este projeto é a ferramenta de ensino para um curso de produção audiovisual d
 
 O projeto foi refatorado para usar uma arquitetura de **"Smart Components" e "Dumb Components"**, o que centraliza a lógica e facilita a manutenção.
 
-* **`AppComponent` (Smart Component 🧠):**
+* **`App` (Smart Component):**
     * É o "cérebro" da aplicação.
     * Gerencia todo o estado usando **Angular Signals** (ex: `indiceAtual = signal(0)`).
     * Calcula o slide atual (ex: `slideAtual = computed(...)`).
     * Contém as funções de navegação (`proximoSlide()`, `voltarSlide()`).
     * Orquestra quais dados os componentes filhos irão exibir.
 
-* **`SlideHeaderComponent` (Dumb Component 🖼️):**
+* **`SlideHeaderComponent` (Dumb Component):**
     * Componente "burro" que apenas exibe o cabeçalho.
     * Recebe o slide atual via `@Input()`: `<app-slide-header [slide]="slideAtual()">`.
     * Usa um `@switch` interno para estilizar o título com base no `slide.level` (H1, H2 ou H3).
 
-* **`SlideMainComponent` (Dumb Component 🖼️):**
+* **`SlideMainComponent` (Dumb Component):**
     * Componente "burro" que apenas exibe o conteúdo principal.
     * Recebe os blocos de conteúdo via `@Input()`: `<app-slide-main [blocks]="slideAtual().blocks">`.
     * Usa um `@for` e `@switch` para renderizar os diferentes tipos de blocos (texto, lista, tabela, etc.).
 
-Este padrão permite que, no futuro, o `AppComponent` possa carregar outras aulas (Aula 3, Aula 4) e passá-las para os mesmos componentes filhos sem esforço.
+Este padrão permite que, no futuro, o `App` possa carregar outras aulas (Aula 3, Aula 4) e passá-las para os mesmos componentes filhos sem esforço.
 
 ---
 
