@@ -1,0 +1,69 @@
+<main class="container mx-auto px-6 text-lg text-gray-300">
+
+      @for (block of blocks; track $index) {
+      @switch (block.type) {
+
+      @case ('text') {
+      <p class="mt-2 text-lg text-gray-400 text-center">
+        {{ block.content }}
+      </p>
+      }
+
+      @case ('list') {
+      <div class="flex justify-center my-4">
+        @if (block.ordered) {
+        <ol class="list-decimal list-inside">
+          @for (item of block.items; track $index) {
+          <li>{{ item }}</li>
+          }
+        </ol>
+        } @else {
+        <ul class="list-disc list-inside">
+          @for (item of block.items; track $index) {
+          <li>{{ item }}</li>
+          }
+        </ul>
+        }
+      </div>
+      }
+
+      @case ('complexList') {
+      <dl class="my-4 max-w-2xl mx-auto">
+        @for (item of block.items; track $index) {
+        <dt class="font-semibold text-white">{{ item.title }}</dt>
+        <dd class="ml-4 mb-2 text-gray-400">{{ item.description }}</dd>
+        }
+      </dl>
+      }
+
+      @case ('quote') {
+      <blockquote class="my-4 border-l-4 border-gray-600 pl-4 italic text-gray-400 text-center">
+        "{{ block.text }}"
+      </blockquote>
+      }
+
+      @case ('table') {
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-700 my-4 text-left">
+          <thead class="bg-gray-800">
+            <tr>
+              @for (cell of block.headers; track $index) {
+              <th class="px-6 py-3 font-medium">{{ cell }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody class="bg-gray-800/50 divide-y divide-gray-700">
+            @for (row of block.rows; track $index) {
+            <tr>
+              @for (cell of row; track $index) {
+              <td class="px-6 py-4 text-gray-400">{{ cell }}</td>
+              }
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      }
+      }
+      }
+    </main>
