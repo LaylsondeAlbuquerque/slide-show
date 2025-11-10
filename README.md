@@ -4,6 +4,15 @@ Este projeto é a ferramenta de ensino para um curso de produção audiovisual d
 
 ---
 
+
+## Aplicação ao Vivo (Demo)
+
+Você pode acessar e usar a aplicação de slides diretamente no seu navegador através do link abaixo:
+
+**[https://laylsondealbuquerque.github.io/slide-show/](https://laylsondealbuquerque.github.io/slide-show/)**
+
+---
+
 ## Principais Funcionalidades
 
 * **Navegação por Slides:** Avance e volte pelos slides com botões na tela.
