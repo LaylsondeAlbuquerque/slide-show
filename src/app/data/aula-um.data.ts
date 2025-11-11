@@ -1,5 +1,18 @@
+/**
+ * @fileoverview
+ * Arquivo de dados estáticos (mock data) para o conteúdo da "Aula 1".
+ *
+ * Este arquivo exporta a constante AULA_UM, que é um array de
+ * objetos ISlide, seguindo o contrato definido em `slide.model.ts`.
+ */
+
 import { ISlide } from '../models/slide.model';
 
+/**
+ * Constante contendo todos os slides da "Aula 1: A Semente da Ideia".
+ *
+ * Cada objeto no array representa um slide individual na apresentação.
+ */
 export const AULA_UM: ISlide[] = [
   // ---- Seção 1: Início (id="inicio") ----
   {

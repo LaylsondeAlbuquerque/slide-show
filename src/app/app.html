@@ -1,70 +1,123 @@
+<!-- 
+  Container principal da aplicação.
+  Define o layout de tela cheia (h-screen) e serve como
+  fundo relativo para os elementos de navegação absolutos.
+-->
 <div class="relative w-full h-screen">
 
-    <div class="w-full h-full p-18 md:p-24 overflow-y-auto 
-              flex flex-col justify-center" (swipeleft)="proximoSlide()" (swiperight)="voltarSlide()">
-        @if (slideAtual()) {
+  <!-- 
+    Wrapper de conteúdo principal.
+    - Controla o padding (p-18, md:p-24) e o scroll interno (overflow-y-auto).
+    - Centraliza o conteúdo verticalmente (flex flex-col justify-center).
+    - Captura eventos de swipe (swipeleft, swiperight) para navegação mobile.
+  -->
+  <div class="w-full h-full p-18 md:p-24 overflow-y-auto 
+            flex flex-col justify-center" (swipeleft)="proximoSlide()" (swiperight)="voltarSlide()">
+    
+    <!-- 
+      Renderização condicional do slide.
+      O conteúdo do slide (header, hr, main) só é exibido se 'slideAtual()' 
+      tiver um valor. Isso previne erros caso os dados ainda não tenham carregado.
+    -->
+    @if (slideAtual()) {
 
-        <app-slide-header-component [slide]="slideAtual()"></app-slide-header-component>
-        <hr class="my-6 border-gray-700">
-        <app-slide-main-component [blocks]="slideAtual().blocks"></app-slide-main-component>
-        <nav>
-            <div class="absolute z-10 top-4 left-1/2 -translate-x-1/2">
+      <!-- Componente "filho" que renderiza o cabeçalho (título/subtítulo) -->
+      <app-slide-header-component [slide]="slideAtual()"></app-slide-header-component>
+      
+      <hr class="my-6 border-gray-700">
+      
+      <!-- Componente "filho" que renderiza os blocos de conteúdo (texto, listas, etc.) -->
+      <app-slide-main-component [blocks]="slideAtual().blocks"></app-slide-main-component>
+      
+      <!-- 
+        Barra de navegação (NAV).
+        Contém todos os controles (seletor de aula, botões de próximo/anterior, contador).
+      -->
+      <nav>
+        <!-- [SELETOR DE AULA] - Topo, Centro -->
+        <div class="absolute z-10 top-4 left-1/2 -translate-x-1/2">
+          <div class="relative bg-black/30 rounded-full px-2">
 
-                <div class="relative bg-black/30 rounded-full px-2">
+            <!-- 
+              O <select> real.
+              - (change): Dispara o método 'mudarAula' no app.ts
+              - appearance-none: Esconde o visual padrão do <select>
+            -->
+            <select (change)="mudarAula($event)" class="relative z-10 
+                      appearance-none bg-transparent 
+                      text-white text-sm
+                      border-none outline-none cursor-pointer
+                      py-2 pl-3 pr-6">
 
-                    <select (change)="mudarAula($event)" class="relative z-10 
-                       appearance-none bg-transparent 
-                       text-white text-sm
-                       border-none outline-none cursor-pointer
-                       py-2 pl-3 pr-6">
+              <!-- Lista de aulas é populada dinamicamente com @for -->
+              @for (aula of aulasDisponiveis; track aula.id) {
+                <option [value]="aula.id" class="bg-gray-900">{{aula.nome}}</option>
+              }
+            </select>
 
-                        @for (aula of aulasDisponiveis; track aula.id) {
-                        <option [value]="aula.id" class="bg-gray-900">{{aula.nome}}</option>
-                        }
-                    </select>
-
-                    <div class="absolute z-0 top-1/2 -translate-y-1/2 right-3
-                    pointer-events-none">
-                        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
-                            </path>
-                        </svg>
-                    </div>
-
-                </div>
+            <!-- Ícone de seta (chevron) customizado para o <select> -->
+            <div class="absolute z-0 top-1/2 -translate-y-1/2 right-3
+                      pointer-events-none">
+              <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                </path>
+              </svg>
             </div>
 
+          </div>
+        </div>
 
-            <div (click)="voltarSlide()" class="absolute z-10 top-1/2 left-0 -translate-y-1/2 
-            h-[75vh] w-18 cursor-pointer" [class.pointer-events-none]="indiceSlide() === 0">
 
-                <button [disabled]="indiceSlide() === 0" class="absolute top-1/2 left-4 -translate-y-1/2
-                   w-12 h-12 rounded-full bg-black/30 text-white
-                   font-bold
-                   transition-colors
-                   disabled:opacity-20 cursor-pointer">
-                    &lt;
-                </button>
-            </div>
-            <div (click)="proximoSlide()" class="absolute z-10 top-1/2 right-0 -translate-y-1/2 
-            h-[75vh] w-18 cursor-pointer" [class.pointer-events-none]="indiceSlide() === slides().length - 1">
-                <button [disabled]="indiceSlide() === slides().length - 1" class="absolute top-1/2 
-                  right-4  -translate-y-1/2 w-12 h-12 
-                  rounded-full font-bold 
-                   bg-black/30 text-white hover:bg-black/50 
-                   transition-colors
+        <!-- 
+          [NAVEGAÇÃO ANTERIOR] - Botão Esquerdo
+          - O 'div' externo (h-[75vh]) serve como uma área de clique maior e mais fácil 
+            de acertar, especialmente no mobile (aumenta a "hitbox").
+          - (click): Dispara o método 'voltarSlide'.
+          - [class.pointer-events-none]: Desativa a área de clique se for o primeiro slide.
+        -->
+        <div (click)="voltarSlide()" class="absolute z-10 top-1/2 left-0 -translate-y-1/2 
+              h-[75vh] w-18 cursor-pointer" [class.pointer-events-none]="indiceSlide() === 0">
+          
+          <!-- O botão visual -->
+          <button [disabled]="indiceSlide() === 0" class="absolute top-1/2 left-4 -translate-y-1/2
+                    w-12 h-12 rounded-full bg-black/30 text-white
+                    font-bold
+                    transition-colors
+                    disabled:opacity-20 cursor-pointer">
+            &lt;
+          </button>
+        </div>
+        
+        <!-- 
+          [NAVEGAÇÃO PRÓXIMO] - Botão Direito
+          - Mesma lógica do botão anterior, mas para 'proximoSlide'.
+          - Desabilita quando 'indiceSlide()' é o último slide.
+        -->
+        <div (click)="proximoSlide()" class="absolute z-10 top-1/2 right-0 -translate-y-1/2 
+              h-[75vh] w-18 cursor-pointer" [class.pointer-events-none]="indiceSlide() === slides().length - 1">
+          
+          <button [disabled]="indiceSlide() === slides().length - 1" class="absolute top-1/2 
+                    right-4  -translate-y-1/2 w-12 h-12 
+                    rounded-full font-bold 
+                    bg-black/30 text-white hover:bg-black/50 
+                    transition-colors
                     disabled:opacity-20 
                     cursor-pointer">&gt;</button>
-            </div>
+        </div>
 
-            <div class="absolute z-10 bottom-4 left-1/2 -translate-x-1/2
-           bg-black/30 text-white text-sm px-3 py-1 rounded-full">
-                <span>{{ indiceSlide() + 1 }} de {{ slides().length }}</span>
-            </div>
-        </nav>
+        <!-- [CONTADOR DE SLIDES] - Fundo, Centro -->
+        <div class="absolute z-10 bottom-4 left-1/2 -translate-x-1/2
+              bg-black/30 text-white text-sm px-3 py-1 rounded-full">
+          <!-- 
+            Exibe o índice atual (adicionando +1, já que índices são base 0)
+            e o total de slides.
+          -->
+          <span>{{ indiceSlide() + 1 }} de {{ slides().length }}</span>
+        </div>
+      </nav>
 
-        }
-    </div>
+    } <!-- Fim do @if (slideAtual()) -->
+  </div>
 
 </div>

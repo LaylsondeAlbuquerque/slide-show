@@ -8,6 +8,18 @@ import { AULA_DOIS} from './data/aula-dois.data';
 import { AULA_UM } from './data/aula-um.data';
 import { ISlide } from './models/slide.model';
 
+/**
+ * Componente raiz e principal da aplicação (App).
+ *
+ * Este componente atua como o "cérebro" da apresentação, gerenciando
+ * o estado da aula e do slide atual usando Angular Signals. Ele é
+ * responsável por:
+ * - Carregar os dados das aulas.
+ * - Controlar qual aula está selecionada.
+ * - Controlar qual slide está visível.
+ * - Fornecer os métodos de navegação (próximo, voltar, mudar aula)
+ * para o template `app.html`.
+ */
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -21,48 +33,105 @@ import { ISlide } from './models/slide.model';
 })
 export class App {
 
-  // (Assumindo que você importou AULA_UM e AULA_DOIS)
-aulasDisponiveis = [
-  { id: 'aula1', nome: 'Aula 1: A Semente da Ideia', data: AULA_UM },
-  { id: 'aula2', nome: 'Aula 2: A Mágica da Câmera', data: AULA_DOIS }
-];
+  /**
+   * Array que armazena os dados de todas as aulas disponíveis.
+   * Usado para popular o `<select>` de aulas no template.
+   */
+  aulasDisponiveis = [
+    { id: 'aula1', nome: 'Aula 1: A Semente da Ideia', data: AULA_UM },
+    { id: 'aula2', nome: 'Aula 2: A Mágica da Câmera', data: AULA_DOIS }
+  ];
 
-// ----- FONTES DA VERDADE (Signals) -----
-aulaSelecionada = signal(this.aulasDisponiveis[0]);
-indiceSlide = signal(0);
+  // --- State Management com Signals ---
 
-// ----- VALORES DERIVADOS (Computed) -----
+  /**
+   * FONTE DA VERDADE (Signal): Armazena o *objeto* da aula
+   * que está selecionada no momento.
+   *
+   * Inicia com a primeira aula da lista.
+   * @example
+   * { id: 'aula1', nome: 'Aula 1...', data: [...] }
+   */
+  aulaSelecionada = signal(this.aulasDisponiveis[0]);
 
-// CORRIGIDO: 'slides' agora é um COMPUTED, não um signal.
-// Ele "escuta" o 'aulaSelecionada'
-slides = computed(() => this.aulaSelecionada().data);
+  /**
+   * FONTE DA VERDADE (Signal): Armazena o *índice* (base 0)
+   * do slide atual dentro da aula selecionada.
+   *
+   * Inicia em 0 (o primeiro slide).
+   */
+  indiceSlide = signal(0);
 
-// Este 'computed' está perfeito
-slideAtual = computed(() => this.slides()[this.indiceSlide()]);
+  /**
+   * VALOR DERIVADO (Computed): "Escuta" o signal `aulaSelecionada`.
+   *
+   * Retorna o array de `ISlide[]` da aula que está selecionada no momento.
+   * Este valor é recalculado automaticamente sempre que `aulaSelecionada` muda.
+   */
+  slides = computed(() => this.aulaSelecionada().data);
+
+  /**
+   * VALOR DERIVADO (Computed): "Escuta" os signals `slides` e `indiceSlide`.
+   *
+   * Retorna o objeto `ISlide` do slide atual.
+   * Este valor é recalculado automaticamente sempre que `slides` (e
+   * consequentemente `aulaSelecionada`) ou `indiceSlide` mudam.
+   */
+  slideAtual = computed(() => this.slides()[this.indiceSlide()]);
 
 
-// ----- MÉTODOS -----
-proximoSlide() {
-  // CORRIGIDO: lendo 'slides()' com parênteses
-  if (this.indiceSlide() < this.slides().length - 1) {
-    this.indiceSlide.update(valorAtual => valorAtual + 1);
+  // --- Métodos de Navegação (Actions) ---
+
+  /**
+   * Avança para o próximo slide.
+   *
+   * Atualiza o `indiceSlide` somando 1, mas apenas se não
+   * estiver no último slide.
+   *
+   * Chamado pelo `(click)` e `(swipeleft)` no template `app.html`.
+   */
+  proximoSlide() {
+    // Lê o valor atual dos signals
+    if (this.indiceSlide() < this.slides().length - 1) {
+      // Atualiza o signal de índice
+      this.indiceSlide.update(valorAtual => valorAtual + 1);
+    }
   }
-}
 
-voltarSlide() {
-  if (this.indiceSlide() > 0) {
-    this.indiceSlide.update(valorAtual => valorAtual - 1);
+  /**
+   * Retorna para o slide anterior.
+   *
+   * Atualiza o `indiceSlide` subtraindo 1, mas apenas se não
+   * estiver no primeiro slide (índice 0).
+   *
+   * Chamado pelo `(click)` e `(swiperight)` no template `app.html`.
+   */
+  voltarSlide() {
+    if (this.indiceSlide() > 0) {
+      this.indiceSlide.update(valorAtual => valorAtual + 1);
+    }
   }
-}
 
-// Esta função estava correta.
-mudarAula(event: Event) {
-  const selectElement = event.target as HTMLSelectElement;
-  const aulaId = selectElement.value;
-  const aulaEncontrada = this.aulasDisponiveis.find(aula => aula.id === aulaId);
-  if (aulaEncontrada) {
-    this.aulaSelecionada.set(aulaEncontrada);
-    this.indiceSlide.set(0);
+  /**
+   * Troca a aula inteira com base na seleção do usuário no `<select>`.
+   *
+   * Chamado pelo `(change)` no `<select>` do template `app.html`.
+   *
+   * @param event O evento DOM 'change' disparado pelo `<select>`.
+   */
+  mudarAula(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const aulaId = selectElement.value;
+    const aulaEncontrada = this.aulasDisponiveis.find(aula => aula.id === aulaId);
+
+    if (aulaEncontrada) {
+      // 1. Atualiza o signal da aula selecionada.
+      //    Isso automaticamente recalcula o `slides()` (computed).
+      this.aulaSelecionada.set(aulaEncontrada);
+
+      // 2. Reseta o índice do slide para 0, para começar a nova aula do início.
+      //    Isso automaticamente recalcula o `slideAtual()` (computed).
+      this.indiceSlide.set(0);
+    }
   }
-}
 }

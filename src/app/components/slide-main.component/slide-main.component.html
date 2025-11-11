@@ -1,16 +1,39 @@
+<!-- 
+  Container principal para os blocos de conteúdo do slide.
+  Usa Tailwind para centralizar e estilizar o texto.
+-->
 <main class="container mx-auto px-6 text-lg text-gray-300">
 
-      @for (block of blocks; track $index) {
-      @switch (block.type) {
+  <!-- 
+    Loop Principal (@for):
+    Itera sobre o array 'blocks' (que é o @Input vindo do .ts).
+    'track $index' é usado para otimizar a performance do Angular.
+  -->
+  @for (block of blocks; track $index) {
 
+    <!-- 
+      Motor de Renderização (@switch):
+      Este é o núcleo do componente. Ele lê a propriedade 'block.type'
+      (que vem do seu slide.model.ts, ex: 'text', 'list', 'table')
+      e decide qual bloco de HTML renderizar com base nesse tipo.
+    -->
+    @switch (block.type) {
+
+      <!-- CASO: Bloco de Texto (type: 'text') -->
       @case ('text') {
       <p class="mt-2 text-lg text-gray-400 text-center">
         {{ block.content }}
       </p>
       }
 
+      <!-- CASO: Bloco de Lista Simples (type: 'list') -->
       @case ('list') {
       <div class="flex justify-center my-4">
+        <!-- 
+          Renderização condicional dentro do @case:
+          Verifica se a lista é ordenada (ordered: true) para renderizar <ol>
+          ou não ordenada (ordered: false) para renderizar <ul>.
+        -->
         @if (block.ordered) {
         <ol class="list-decimal list-inside">
           @for (item of block.items; track $index) {
@@ -27,6 +50,8 @@
       </div>
       }
 
+      <!-- CASO: Bloco de Lista Complexa (type: 'complexList') -->
+      <!-- Usa uma lista de definição (dl, dt, dd) para pares de título/descrição. -->
       @case ('complexList') {
       <dl class="my-4 max-w-2xl mx-auto">
         @for (item of block.items; track $index) {
@@ -36,12 +61,15 @@
       </dl>
       }
 
+      <!-- CASO: Bloco de Citação (type: 'quote') -->
       @case ('quote') {
       <blockquote class="my-4 border-l-4 border-gray-600 pl-4 italic text-gray-400 text-center">
         "{{ block.text }}"
       </blockquote>
       }
 
+      <!-- CASO: Bloco de Tabela (type: 'table') -->
+      <!-- Renderiza uma tabela HTML completa com cabeçalho (thead) e corpo (tbody). -->
       @case ('table') {
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-700 my-4 text-left">
@@ -64,6 +92,6 @@
         </table>
       </div>
       }
-      }
-      }
-    </main>
+    } <!-- Fim do @switch -->
+  } <!-- Fim do @for -->
+</main>

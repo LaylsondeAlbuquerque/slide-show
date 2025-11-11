@@ -1,10 +1,18 @@
-/* ******************************************************
- * ARQUIVO: src/app/data/aula.data.ts
- * (O CONTEÚDO)
- * ****************************************************** */
+/**
+ * @fileoverview
+ * Arquivo de dados estáticos (mock data) para o conteúdo da "Aula 2".
+ *
+ * Este arquivo exporta a constante AULA_DOIS, que é um array de
+ * objetos ISlide, seguindo o contrato definido em `slide.model.ts`.
+ */
 
 import { ISlide } from '../models/slide.model';
 
+/**
+ * Constante contendo todos os slides da "Aula 2: A Mágica da Câmera".
+ *
+ * Cada objeto no array representa um slide individual na apresentação.
+ */
 export const AULA_DOIS: ISlide[] = [
   // ---- Seção 1: Início ----
   {
