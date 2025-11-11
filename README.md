@@ -1,83 +1,86 @@
-# Projeto Slide-Show de Aula (Angular)
+<h1 align="center">Apresentação Interativa com Angular</h1>
 
-Este projeto é a ferramenta de ensino para um curso de produção audiovisual do **Projeto Crescer**, uma iniciativa social para adolescentes em uma comunidade do Recife. Ele foi pensado para que os alunos possam acompanhar a aula com o conteúdo em suas mãos, já que o site é publicado usando o GitHub. Isso também permite que eles tenham acesso ao conteúdo das aulas mesmo após concluírem o curso.
+<p align="center">
+  <a href="https://laylsondealbuquerque.github.io/slide-show/">
+    <img src="https://img.shields.io/badge/Ver_Apresentação_Online!-DD0031?style=for-the-badge&logo=angular&logoColor=white" alt="Ver Apresentação Online" />
+  </a>
+</p>
 
----
-
-
-## Aplicação ao Vivo (Demo)
-
-Você pode acessar e usar a aplicação de slides diretamente no seu navegador através do link abaixo:
-
-**[https://laylsondealbuquerque.github.io/slide-show/](https://laylsondealbuquerque.github.io/slide-show/)**
-
----
-
-## Principais Funcionalidades
-
-* **Navegação por Slides:** Avance e volte pelos slides com botões na tela.
-* **Gestos de Arraste (Swipe):** Em dispositivos móveis, arraste para a esquerda ou direita para trocar de slide (via **HammerJS**).
-* **Slides Hierárquicos:** O conteúdo é estruturado em níveis (H1, H2, H3), e o layout do slide (ex: tamanho do título) se adapta a essa hierarquia.
-* **Componentização:** A interface é dividida em componentes reutilizáveis.
-* **Design Responsivo:** Estilizado com **Tailwind CSS** para funcionar em desktop e mobile.
+<p align="center">
+  <em>Um projeto de estudo focado na arquitetura reativa do Angular (v17+) com Signals.</em>
+</p>
 
 ---
 
-## Arquitetura do Projeto
+## Sobre o Projeto
 
-O projeto foi refatorado para usar uma arquitetura de **"Smart Components" e "Dumb Components"**, o que centraliza a lógica e facilita a manutenção.
+Este é um projeto de estudo focado em **Angular (v17+)**, onde construí um visualizador de apresentações interativo (slides) em formato de Single Page Application (SPA).
 
-* **`App` (Smart Component):**
-    * É o "cérebro" da aplicação.
-    * Gerencia todo o estado usando **Angular Signals** (ex: `indiceAtual = signal(0)`).
-    * Calcula o slide atual (ex: `slideAtual = computed(...)`).
-    * Contém as funções de navegação (`proximoSlide()`, `voltarSlide()`).
-    * Orquestra quais dados os componentes filhos irão exibir.
+<b>Este projeto tem um propósito prático muito especial:</b> ele foi desenvolvido para servir como o material de apresentação de um mini-curso de produção audiovisual. Este curso é voltado para o projeto social **Crescer**, focado em adolescentes de uma comunidade carente em Recife, Pernambuco.
 
-* **`SlideHeaderComponent` (Dumb Component):**
-    * Componente "burro" que apenas exibe o cabeçalho.
-    * Recebe o slide atual via `@Input()`: `<app-slide-header [slide]="slideAtual()">`.
-    * Usa um `@switch` interno para estilizar o título com base no `slide.level` (H1, H2 ou H3).
+O foco técnico foi na **arquitetura de estado local** e na **renderização de componentes dinâmicos**. A aplicação carrega o conteúdo de arquivos `.data.ts` (usados como um banco de dados estático) e os renderiza no template usando um "contrato" de modelo (`slide.model.ts`).
 
-* **`SlideMainComponent` (Dumb Component):**
-    * Componente "burro" que apenas exibe o conteúdo principal.
-    * Recebe os blocos de conteúdo via `@Input()`: `<app-slide-main [blocks]="slideAtual().blocks">`.
-    * Usa um `@for` e `@switch` para renderizar os diferentes tipos de blocos (texto, lista, tabela, etc.).
+O núcleo da aplicação é 100% reativo, usando **Signals** para gerenciar o estado (qual aula e qual slide estão ativos) e **computed signals** para derivar o conteúdo que deve ser exibido.
 
-Este padrão permite que, no futuro, o `App` possa carregar outras aulas (Aula 3, Aula 4) e passá-las para os mesmos componentes filhos sem esforço.
+---
+
+## Funcionalidades
+
+- [x] **Visualizador de Slides:** Renderiza o conteúdo principal da apresentação.
+- [x] **Navegação de Slides:** Permite avançar e retroceder os slides com botões.
+- [x] **Navegação por Gestos:** Suporte para `(swipeleft)` e `(swiperight)` em dispositivos móveis.
+- [x] **Seleção de Aulas:** Um `<select>` permite trocar o conjunto de slides (Aula 1, Aula 2).
+- [x] **Renderizador de Conteúdo:** O `slide-main` usa `@switch` para renderizar dinamicamente diferentes tipos de blocos (texto, listas, tabelas, citações) com base no modelo.
+- [x] **Estilização Dinâmica:** O `slide-header` usa `@switch` para alterar o tamanho e a cor dos títulos (nível 1, 2 ou 3) com base no `slide.level`.
+- [x] **UI Limpa:** Estilização feita com **Tailwind CSS**.
 
 ---
 
 ## Tecnologias Utilizadas
 
-* **[Angular](https://angular.io/)** (v17+)
-* **[TypeScript](https://www.typescriptlang.org/)**
-* **[Angular Signals](https://angular.io/guide/signals)** (para gerenciamento de estado)
-* **[Tailwind CSS](https://tailwindcss.com/)** (para todo o design e layout)
-* **[HammerJS](https://hammerjs.github.io/)** (para os gestos de swipe)
+![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+
+---
+
+## O que eu aprendi
+
+Este projeto foi fundamental para solidificar conceitos modernos de desenvolvimento com Angular:
+
+* **Arquitetura "Smart/Dumb":** O `App` (`app.ts`) atua como o componente "Smart" (inteligente), gerenciando todo o estado. Os componentes `slide-header` e `slide-main` são "Dumb" (de apresentação), apenas recebendo dados via `@Input` e os exibindo.
+* **Gerenciamento de Estado 100% com Signals:** Foi a base do projeto.
+    * `signal()`: Usado como a "fonte da verdade" para o estado (`aulaSelecionada`, `indiceSlide`).
+    * `computed()`: Usado para "derivar" valores reativamente (`slides` e `slideAtual`), recalculando automaticamente quando as fontes mudam.
+* **Nova Sintaxe de Template (Controle de Fluxo):**
+    * `@for`: Para iterar sobre os blocos de conteúdo e listas.
+    * `@if`: Para exibir elementos condicionais (como o subtítulo).
+    * `@switch`: A chave do projeto. Usado de duas formas:
+        1.  Em `slide-header`: Para aplicar estilos diferentes com base no `slide.level`.
+        2.  Em `slide-main`: Para criar um "renderizador" que escolhe qual HTML exibir com base no `block.type`.
+* **Organização de Dados (Models/Data):** A importância de criar um "contrato" (`slide.model.ts`) para definir a forma dos dados, e usar arquivos `.data.ts` para simular um banco de dados estático, mantendo o `App` limpo.
+* **Estilização com Tailwind CSS:** Uso de classes utilitárias diretamente no HTML para construir o layout.
+* **Event Binding:** Uso de `(click)` para os botões, `(change)` para o select e eventos de gesto como `(swipeleft)` e `(swiperight)` para navegação.
 
 ---
 
 ## Como Executar Localmente
 
-1.  Clone este repositório:
+1.  Clone o repositório:
     ```bash
-    git clone [URL_DO_SEU_REPOSITORIO]
+    git clone [https://github.com/laylsondealbuquerque/slide-show.git](https://github.com/laylsondealbuquerque/slide-show.git)
     ```
-
 2.  Navegue até a pasta do projeto:
     ```bash
-    cd nome-do-projeto
+    cd slide-show
     ```
-
-3.  Instale as dependências (incluindo `hammerjs`):
+3.  Instale as dependências:
     ```bash
     npm install
     ```
-
 4.  Execute o servidor de desenvolvimento:
     ```bash
-    ng serve -o
+    ng serve
     ```
-
 5.  Abra seu navegador em `http://localhost:4200/`.
