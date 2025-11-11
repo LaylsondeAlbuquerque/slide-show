@@ -6,7 +6,8 @@ import { SlideMainComponent } from './components/slide-main.component/slide-main
 
 import { AULA_DOIS} from './data/aula-dois.data';
 import { AULA_UM } from './data/aula-um.data';
-import { ISlide } from './models/slide.model';
+
+import { SwipeDirective } from './directives/swipe.directive';
 
 /**
  * Componente raiz e principal da aplicação (App).
@@ -26,7 +27,8 @@ import { ISlide } from './models/slide.model';
   imports: [
     CommonModule,
     SlideHeaderComponent,
-    SlideMainComponent
+    SlideMainComponent,
+    SwipeDirective
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
