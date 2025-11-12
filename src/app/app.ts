@@ -110,7 +110,7 @@ export class App {
    */
   voltarSlide() {
     if (this.indiceSlide() > 0) {
-      this.indiceSlide.update(valorAtual => valorAtual + 1);
+      this.indiceSlide.update(valorAtual => valorAtual - 1);
     }
   }
 

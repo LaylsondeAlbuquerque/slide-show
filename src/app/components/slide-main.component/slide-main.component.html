@@ -21,14 +21,14 @@
 
       <!-- CASO: Bloco de Texto (type: 'text') -->
       @case ('text') {
-      <p class="mt-2 text-lg text-gray-400 text-center">
+      <p class="mt-2 text-sm md:text-2xl text-gray-400 text-center">
         {{ block.content }}
       </p>
       }
 
       <!-- CASO: Bloco de Lista Simples (type: 'list') -->
       @case ('list') {
-      <div class="flex justify-center my-4">
+      <div class="flex justify-center my-4 text-sm md:text-2xl">
         <!-- 
           Renderização condicional dentro do @case:
           Verifica se a lista é ordenada (ordered: true) para renderizar <ol>
@@ -53,7 +53,7 @@
       <!-- CASO: Bloco de Lista Complexa (type: 'complexList') -->
       <!-- Usa uma lista de definição (dl, dt, dd) para pares de título/descrição. -->
       @case ('complexList') {
-      <dl class="my-4 max-w-2xl mx-auto">
+      <dl class="my-4 max-w-2xl mx-auto text-sm md:text-2xl">
         @for (item of block.items; track $index) {
         <dt class="font-semibold text-white">{{ item.title }}</dt>
         <dd class="ml-4 mb-2 text-gray-400">{{ item.description }}</dd>
@@ -63,7 +63,7 @@
 
       <!-- CASO: Bloco de Citação (type: 'quote') -->
       @case ('quote') {
-      <blockquote class="my-4 border-l-4 border-gray-600 pl-4 italic text-gray-400 text-center">
+      <blockquote class="my-4 border-l-4 border-gray-600 pl-4 italic text-gray-400 text-center text-sm md:text-2xl">
         "{{ block.text }}"
       </blockquote>
       }
@@ -71,7 +71,7 @@
       <!-- CASO: Bloco de Tabela (type: 'table') -->
       <!-- Renderiza uma tabela HTML completa com cabeçalho (thead) e corpo (tbody). -->
       @case ('table') {
-      <div class="overflow-x-auto">
+      <div class="overflow-x-auto text-sm md:text-2xl">
         <table class="min-w-full divide-y divide-gray-700 my-4 text-left">
           <thead class="bg-gray-800">
             <tr>
