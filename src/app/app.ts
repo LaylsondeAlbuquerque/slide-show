@@ -6,6 +6,7 @@ import { SlideMainComponent } from './components/slide-main.component/slide-main
 
 import { AULA_DOIS} from './data/aula-dois.data';
 import { AULA_UM } from './data/aula-um.data';
+import { AULA_ALGORITMO_REDES_SOCIAIS } from './data/aula_algoritmo_redes_sociais.data';
 
 import { SwipeDirective } from './directives/swipe.directive';
 
@@ -41,7 +42,8 @@ export class App {
    */
   aulasDisponiveis = [
     { id: 'aula1', nome: 'Aula 1: A Semente da Ideia', data: AULA_UM },
-    { id: 'aula2', nome: 'Aula 2: A Mágica da Câmera', data: AULA_DOIS }
+    { id: 'aula2', nome: 'Aula 2: A Mágica da Câmera', data: AULA_DOIS },
+    { id: 'aulaExtra1', nome: 'Aula Extra: O Algoritmo das Redes Sociais', data: AULA_ALGORITMO_REDES_SOCIAIS }
   ];
 
   // --- State Management com Signals ---
