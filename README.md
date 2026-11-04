@@ -7,14 +7,14 @@
 </p>
 
 <p align="center">
-  <em>Um projeto de estudo focado na arquitetura reativa do Angular (v17+) com Signals.</em>
+  <em>Um projeto de estudo focado na arquitetura reativa do Angular (v20.3) com Signals.</em>
 </p>
 
 ---
 
 ## Sobre o Projeto
 
-Este é um projeto de estudo focado em **Angular (v17+)**, onde construí um visualizador de apresentações interativo (slides) em formato de Single Page Application (SPA).
+Este é um projeto de estudo focado em **Angular (v20.3)**, onde construí um visualizador de apresentações interativo (slides) em formato de Single Page Application (SPA).
 
 <b>Este projeto tem um propósito prático muito especial:</b> ele foi desenvolvido para servir como o material de apresentação de um mini-curso de produção audiovisual. Este curso é voltado para o projeto social **Crescer**, focado em adolescentes de uma comunidade carente em Recife, Pernambuco.
 
@@ -67,9 +67,11 @@ Este projeto foi fundamental para solidificar conceitos modernos de desenvolvime
 
 ## Como Executar Localmente
 
+Pré-requisitos: Git, npm e Node.js compatível com `^20.19.0 || ^22.12.0 || >=24.0.0`, conforme o Angular CLI registrado no `package-lock.json`.
+
 1.  Clone o repositório:
     ```bash
-    git clone [https://github.com/laylsondealbuquerque/slide-show.git](https://github.com/laylsondealbuquerque/slide-show.git)
+    git clone https://github.com/laylsondealbuquerque/slide-show.git
     ```
 2.  Navegue até a pasta do projeto:
     ```bash
@@ -77,10 +79,10 @@ Este projeto foi fundamental para solidificar conceitos modernos de desenvolvime
     ```
 3.  Instale as dependências:
     ```bash
-    npm install
+    npm ci
     ```
 4.  Execute o servidor de desenvolvimento:
     ```bash
-    ng serve
+    npm start
     ```
 5.  Abra seu navegador em `http://localhost:4200/`.
